@@ -16,6 +16,7 @@ export class AppService {
   }
 
   async create(createLinkDto: CreateLinkDto) {
+    console.log(createLinkDto);
     return await this.prisma.link.create({
       data: createLinkDto,
     });

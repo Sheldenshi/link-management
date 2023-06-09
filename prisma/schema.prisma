@@ -16,6 +16,7 @@ model Link {
   orders      Int      @default(0)
   earned      Float    @default(0)
   productLink String
+  active      Boolean  @default(true)
 
   @@index([id])
 }
