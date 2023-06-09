@@ -35,4 +35,9 @@ export class AppController {
   async updateAndRedirect(@Param('id') id: string) {
     return await this.appService.updateAndRedirect(id);
   }
+
+  @Delete(':id')
+  async deactivate(@Param('id') id: string) {
+    return await this.appService.deactivate(id);
+  }
 }

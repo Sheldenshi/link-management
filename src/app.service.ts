@@ -26,7 +26,7 @@ export class AppService {
     if (isNaN(+id)) {
       throw new HttpException('Invalid link', HttpStatus.BAD_REQUEST);
     }
-
+    // increase number of clicks for link that are active, else redirect to home page
     const link = await this.prisma.link.update({
       where: {
         id: +id,
@@ -37,12 +37,31 @@ export class AppService {
         },
       },
     });
-    // redirect to product url
-    // const link = await this.prisma.link.findUnique({
-    //   where: {
-    //     id: +id,
-    //   },
-    // });
+
+    if (!link.active) {
+      return { url: 'http://localhost:3000' };
+    }
+
     return { url: link.productLink };
+  }
+
+  async deactivate(id: string) {
+    if (isNaN(+id)) {
+      throw new HttpException('Invalid link', HttpStatus.BAD_REQUEST);
+    }
+    const res = await this.prisma.link.update({
+      where: {
+        id: +id,
+      },
+      data: {
+        active: false,
+      },
+    });
+
+    if (!res) {
+      throw new HttpException('Link not found', HttpStatus.NOT_FOUND);
+    }
+
+    return res;
   }
 }
